@@ -23,6 +23,8 @@ Ferramenta web leve e responsiva desenvolvida para ajudar trabalhadores CLT a pl
 2. Abra o arquivo `.html` principal diretamente em qualquer navegador moderno.
 3. Insira os dados do seu contracheque e visualize o planejamento financeiro gerado em tempo real.
 
+ooouuuuu ... acesse o link: [site](https://thazsobral.github.io/ferias-do-clt/)
+
 ---
 
 Desenvolvido por ThazSobral © 2026 — Todos os direitos reservados.
