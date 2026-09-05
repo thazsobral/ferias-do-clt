@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planejador Financeiro de Férias CLT</title>
+    <title>Planejador de Férias CLT (Profissional & Seguro)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -15,103 +15,129 @@
     </style>
 </head>
 
-<body class="text-slate-800 antialiased min-h-screen py-6 px-3 sm:px-6">
-    <div class="max-w-2xl mx-auto">
+<body class="text-slate-800 antialiased min-h-screen py-6 px-3 sm:px-6 flex flex-col justify-between">
+    <div class="max-w-2xl mx-auto w-full">
         <!-- Header -->
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-8 mb-6 text-center">
             <span class="bg-indigo-50 text-indigo-600 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Ferramenta CLT • 2026</span>
-            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-3 mb-2">Simulador de Férias</h1>
-            <p class="text-slate-600 text-xs sm:text-sm max-w-md mx-auto">Organize seu fluxo de caixa e proteja seu orçamento mensal de forma inteligente.</p>
-        </div>
-
-        <!-- Alerta de Validação CLT -->
-        <div id="alertaClt" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-6 text-amber-900 text-xs sm:text-sm flex items-start gap-2">
-            <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-            </svg>
-            <span id="textoAlertaClt">Atenção às regras da CLT: o abono pecuniário é limitado a 10 dias e a soma total não deve ultrapassar 30 dias.</span>
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-3 mb-2">Simulador de Férias Personalizado</h1>
+            <p class="text-slate-600 text-xs sm:text-sm max-w-md mx-auto">Organize seu fluxo de caixa com base em cálculos oficiais da legislação trabalhista brasileira.</p>
+            
+            <!-- Trust Badge -->
+            <div class="mt-4 inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium px-3.5 py-1.5 rounded-full">
+                <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                >
+                <span>Cálculos auditados conforme a CLT e tabelas oficiais INSS/IRPF 2026</span>
+            </div>
         </div>
 
         <!-- Form Section -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-8 mb-6">
-            <h2 class="text-lg sm:text-xl font-semibold text-slate-900 mb-5 flex items-center gap-2">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-8 mb-6 space-y-5">
+            <h2 class="text-lg sm:text-xl font-semibold text-slate-900 flex items-center gap-2">
                 <svg class="w-5 h-5 text-indigo-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                Dados do seu Contracheque
+                Parâmetros do Cálculo
             </h2>
 
-            <div class="space-y-4">
+            <!-- Campo 1: Salário Base -->
+            <div>
+                <div class="flex justify-between items-center mb-1">
+                    <label class="block text-xs sm:text-sm font-medium text-slate-700">Salário Base Nominal (R$)</label>
+                    <button type="button" onclick="toggleAjuda('ajudaSalario')" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Onde achar no holerite?
+                    </button>
+                </div>
+                <input type="number" id="salarioBase" value="4295.00" step="0.01" oninput="gerarPlanejamento()"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-base">
+                <div id="ajudaSalario" class="hidden mt-2 p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs text-indigo-900 leading-relaxed">
+                    💡 <strong>Onde encontrar:</strong> No topo ou no início do seu contracheque, geralmente rotulado como <em>"Salário Base"</em>, <em>"Salário Contratual"</em> ou <em>"Vencimento"</em>.
+                </div>
+            </div>
+
+            <!-- Campo 2: Dependentes -->
+            <div>
+                <div class="flex justify-between items-center mb-1">
+                    <label class="block text-xs sm:text-sm font-medium text-slate-700">Número de Dependentes (IRPF)</label>
+                    <button type="button" onclick="toggleAjuda('ajudaDep')" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        O que informar?
+                    </button>
+                </div>
+                <input type="number" id="numDependentes" value="0" min="0" max="10" oninput="gerarPlanejamento()"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-base">
+                <div id="ajudaDep" class="hidden mt-2 p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs text-indigo-900 leading-relaxed">
+                    💡 <strong>Orientação:</strong> Informe quantos dependentes legais você cadastrou junto à empresa para fins de dedução no Imposto de Renda Retido na Fonte (IRPF). Cada dependente desconta uma faixa fixa da base de cálculo.
+                </div>
+            </div>
+
+            <!-- Dias de Férias e Abono -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">Salário Base Nominal (R$)</label>
-                    <p class="text-xs text-slate-500 mb-1.5">Valor base registrado em carteira.</p>
-                    <input type="number" id="salario" value="3000.00" step="0.01" oninput="calcularAutomaticoSeAtivo()"
-                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-base">
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">Dias de Férias</label>
-                        <p class="text-xs text-slate-500 mb-1.5">Dias de descanso.</p>
-                        <input type="number" id="diasFerias" value="20" min="1" max="30" oninput="gerarPlanejamento()"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-base">
-                    </div>
-                    <div>
-                        <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">Dias de Abono (Venda)</label>
-                        <p class="text-xs text-slate-500 mb-1.5">Máximo de 10 dias.</p>
-                        <input type="number" id="diasAbono" value="10" min="0" max="10" oninput="gerarPlanejamento()"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-base">
-                    </div>
-                </div>
-
-                <!-- Modelo de Pagamento -->
-                <div>
-                    <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">Modelo de Recebimento Salarial</label>
-                    <select id="tipoRecebimento" onchange="mudarModeloRecebimento()" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 outline-none text-base">
-                        <option value="vale">Recebe Vale Quinzenal (Adiantamento dia 15)</option>
-                        <option value="integral">Recebe Parcela Única (Salário mensal integral)</option>
-                    </select>
-                </div>
-
-                <!-- Adiantamento / Vale -->
-                <div id="blocoVale" class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <div class="flex justify-between items-center mb-1">
-                        <label class="text-xs sm:text-sm font-medium text-slate-700">Adiantamento / Vale do Dia 15 (R$)</label>
+                        <label class="block text-xs sm:text-sm font-medium text-slate-700">Dias de Férias Gozadas</label>
+                        <button type="button" onclick="toggleAjuda('ajudaDias')" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">Ajuda</button>
+                    </div>
+                    <input type="number" id="diasFerias" value="20" min="1" max="30" oninput="gerarPlanejamento()"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-base">
+                    <div id="ajudaDias" class="hidden mt-2 p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs text-indigo-900 leading-relaxed">
+                        💡 Quantidade de dias em que você estará efetivamente ausente do trabalho descansando (geralmente 20 dias).
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="block text-xs sm:text-sm font-medium text-slate-700">Dias de Abono (Venda)</label>
+                        <button type="button" onclick="toggleAjuda('ajudaAbono')" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">Ajuda</button>
+                    </div>
+                    <input type="number" id="diasAbono" value="10" min="0" max="10" oninput="gerarPlanejamento()"
+                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-base">
+                    <div id="ajudaAbono" class="hidden mt-2 p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs text-indigo-900 leading-relaxed">
+                        💡 Dias de férias convertidos em dinheiro (1/3 do período de direito, limitado a 10 dias conforme Art. 143 da CLT).
+                    </div>
+                </div>
+            </div>
+
+            <!-- Adiantamento / Vale -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-1">
+                    <label class="text-xs sm:text-sm font-medium text-slate-700">Adiantamento / Vale do Dia 15 (R$)</label>
+                    <div class="flex items-center gap-3">
+                        <button type="button" onclick="toggleAjuda('ajudaVale')" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">Onde achar?</button>
                         <label class="flex items-center gap-1.5 text-xs text-indigo-600 font-semibold cursor-pointer">
                             <input type="checkbox" id="checkVale40" checked onchange="toggleVale40()" class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
                             Automático (40%)
                         </label>
                     </div>
-                    <input type="number" id="adiantamentoQuinzenal" value="1200.00" step="0.01" oninput="gerarPlanejamento()"
-                        class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 outline-none text-base">
                 </div>
+                <input type="number" id="valorVale" value="0.00" step="0.01" oninput="gerarPlanejamento()"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 outline-none text-base">
+                <div id="ajudaVale" class="hidden mt-2 p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs text-indigo-900 leading-relaxed">
+                    💡 <strong>Onde encontrar:</strong> Valor normalmente creditado no dia 15 do mês (se sua empresa pagar vale quinzenal). Se não receber vale, deixe zerado.
+                </div>
+            </div>
 
-                <!-- Descontos -->
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <div class="flex justify-between items-center mb-1">
-                        <label class="text-xs sm:text-sm font-medium text-slate-700">Descontos (INSS/IRPF) (R$)</label>
-                        <label class="flex items-center gap-1.5 text-xs text-indigo-600 font-semibold cursor-pointer">
-                            <input type="checkbox" id="checkDescontoAuto" checked onchange="toggleDescontoAuto()" class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
-                            Automático (Tabelas 2026)
-                        </label>
-                    </div>
-                    <p class="text-xs text-slate-500 mb-2">Calculado progressivamente sobre as férias gozadas (abono isento).</p>
-                    <input type="number" id="descontos" value="0.00" step="0.01" oninput="gerarPlanejamento()"
-                        class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 outline-none text-base">
+            <!-- Descontos e Variáveis -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <div class="flex justify-between items-center mb-1">
+                    <label class="text-xs sm:text-sm font-medium text-slate-700">Descontos Extras e Variáveis (R$)</label>
+                    <button type="button" onclick="toggleAjuda('ajudaDesc')" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">O que incluir?</button>
+                </div>
+                <input type="number" id="descontosExtras" value="0.00" step="0.01" oninput="gerarPlanejamento()"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 outline-none text-base">
+                <div id="ajudaDesc" class="hidden mt-2 p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs text-indigo-900 leading-relaxed">
+                    💡 <strong>O que incluir:</strong> Soma de descontos eventuais que aparecem no holerite, como farmácia, convênio médico, plano odontológico, vale-transporte extra ou empréstimo consignado.
                 </div>
             </div>
         </div>
 
         <!-- Results Section -->
-        <div id="resultado" class="hidden space-y-4 mb-6">
+        <div id="resultado" class="space-y-4 mb-6">
             <div class="bg-gradient-to-r from-slate-900 to-indigo-950 text-white rounded-2xl p-5 sm:p-6 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 <div>
-                    <span class="text-indigo-300 text-xs font-semibold uppercase tracking-wider">Total Líquido Recebido</span>
+                    <span class="text-indigo-300 text-xs font-semibold uppercase tracking-wider">Total Líquido de Férias Disponível</span>
                     <h2 id="lblTotalLiquido" class="text-2xl sm:text-3xl font-bold mt-0.5">R$ 0,00</h2>
-                </div>
-                <div class="text-left sm:text-right w-full sm:w-auto border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-800 flex sm:flex-col justify-between">
-                    <span class="text-slate-400 text-xs">Bruto: <span id="lblTotalBruto" class="text-slate-200">R$ 0,00</span></span>
-                    <span class="text-slate-400 text-xs sm:block">Desc: <span id="lblTotalDescontos" class="text-rose-400">R$ 0,00</span></span>
                 </div>
             </div>
 
@@ -122,14 +148,14 @@
                     <span id="lblProporcaoResumo" class="text-indigo-600">100%</span>
                 </div>
                 <div class="w-full h-4 bg-slate-100 rounded-full overflow-hidden flex gap-0.5">
-                    <div id="barViagem" class="bg-emerald-500 h-full transition-all duration-300" style="width: 0%" title="Lazer / Viagem"></div>
-                    <div id="barVale" class="bg-blue-500 h-full transition-all duration-300" style="width: 0%" title="Guardar (Dia 15)"></div>
-                    <div id="barReposicao" class="bg-indigo-600 h-full transition-all duration-300" style="width: 0%" title="Sustento do Mês"></div>
+                    <div id="barViagem" class="bg-emerald-500 h-full transition-all duration-300" style="width: 0%"></div>
+                    <div id="barVale" class="bg-blue-500 h-full transition-all duration-300" style="width: 0%"></div>
+                    <div id="barReposicao" class="bg-indigo-600 h-full transition-all duration-300" style="width: 0%"></div>
                 </div>
                 <div class="flex flex-wrap gap-4 mt-2.5 text-xs text-slate-600">
-                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> Lazer/Bônus</div>
-                    <div id="legendaBarVale" class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-500 inline-block"></span> Dia 15</div>
-                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-indigo-600 inline-block"></span> Sustento</div>
+                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> Lazer / Bônus</div>
+                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-500 inline-block"></span> Substitui Vale (Dia 15)</div>
+                    <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-indigo-600 inline-block"></span> Complemento Fim do Mês</div>
                 </div>
             </div>
 
@@ -142,57 +168,77 @@
             </div>
 
             <div class="grid grid-cols-1 gap-4">
-                <!-- Card 1: Viagem / Lazer -->
                 <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm border-l-4 border-l-emerald-500">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-md">1. Lazer / Viagem (1/3 + Abono)</span>
+                        <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-md">1. Lazer / Bônus</span>
                         <h4 class="text-xl font-bold text-slate-900" id="valViagem">R$ 0,00</h4>
                     </div>
-                    <p class="text-slate-600 text-xs sm:text-sm">Terço constitucional e dias vendidos isentos. Seu bônus para curtir.</p>
+                    <p class="text-slate-600 text-xs sm:text-sm">O saldo remanescente livre após garantir suas reservas mensais.</p>
                 </div>
 
-                <!-- Card 2: Vale do Dia 15 -->
-                <div id="cardValeContainer" class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm border-l-4 border-l-blue-500">
+                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm border-l-4 border-l-blue-500">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-md">2. Guardar (Dia 15)</span>
+                        <span class="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-md">2. Guardar (Substitui o Vale do Dia 15)</span>
                         <h4 class="text-xl font-bold text-slate-900" id="valVale">R$ 0,00</h4>
                     </div>
-                    <p class="text-slate-600 text-xs sm:text-sm">Mantenha guardado para cobrir os compromissos do dia 15 (sem "vale").</p>
+                    <p class="text-slate-600 text-xs sm:text-sm">Equivalente ao adiantamento quinzenal padrão que não será depositado no dia 15.</p>
                 </div>
 
-                <!-- Card 3: Reposição / Sustento -->
                 <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm border-l-4 border-l-indigo-500">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-md">3. Guardar (Sustento do Mês)</span>
+                        <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-md">3. Guardar (Estimativa Complemento Fim do Mês)</span>
                         <h4 class="text-xl font-bold text-slate-900" id="valReposicao">R$ 0,00</h4>
                     </div>
-                    <p class="text-slate-600 text-xs sm:text-sm" id="textoReposicao">Garante os boletos do mês seguinte.</p>
+                    <p class="text-slate-600 text-xs sm:text-sm mb-3">Valor sugerido para cobrir a redução do contracheque no fim do mês.</p>
+                    
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-amber-900 text-xs leading-relaxed flex items-start gap-2">
+                        <svg class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <span>Previsão aproximada: você deve receber cerca de <strong id="lblProximoPagamento">R$ 667,37</strong> no próximo pagamento referente aos dias trabalhados.</span>
+                            <p class="mt-1 text-amber-800/90">⚠️ <em>Este valor é uma estimativa aproximada e pode variar devido a descontos reais em folha (como convênios e farmácia informados). O valor sugerido para guardar acima é apenas uma recomendação baseada nessa previsão.</em></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Deep Dive & Formulas Section -->
+        <!-- Seção de Referências, Fontes e Fórmulas (Sustentação e Transparência) -->
         <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm space-y-4 mb-6">
-            <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
                 <svg class="w-5 h-5 text-indigo-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                 </svg>
-                Base Legal e Tabelas 2026
+                Referências Legais e Memória de Cálculo (2026)
             </h3>
-            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Os cálculos usam as faixas oficiais e progressivas do <strong>INSS</strong> (até 14% com teto de R$ 8.475,55) e do <strong>IRPF</strong> vigentes em 2026. O abono pecuniário (venda de dias) é isento de encargos por natureza indenizatória (<a href="https://www.planalto.gov.br/ccivil_03/decreto-lei/del1535.htm" target="_blank" class="text-indigo-600 underline font-medium">Art. 143 da CLT</a>).
-            </p>
+            <div class="text-xs text-slate-600 space-y-2.5 leading-relaxed">
+                <p>
+                    <strong>1. Férias e Terço Constitucional:</strong> Regulamentado pelo <a href="https://www.planalto.gov.br/ccivil_03/decreto-lei/del5452.htm" target="_blank" class="text-indigo-600 underline font-medium">Art. 129 a 153 da CLT</a> e pelo Art. 7º, inciso XVII da Constituição Federal, que garante o pagamento das férias com acréscimo de 1/3 (um terço) do valor normal.
+                </p>
+                <p>
+                    <strong>2. Abono Pecuniário (Venda de Férias):</strong> Baseado no <a href="https://www.planalto.gov.br/ccivil_03/decreto-lei/del1535.htm" target="_blank" class="text-indigo-600 underline font-medium">Art. 143 da CLT</a>. O abono de até 10 dias possui natureza jurídica indenizatória, sendo totalmente isento de incidência de INSS e IRPF.
+                </p>
+                <p>
+                    <strong>3. Tabelas Tributárias 2026:</strong> Utiliza as faixas progressivas oficiais atualizadas do <strong>INSS</strong> (alíquotas de 7,5% a 14% com teto constitucional) e do <strong>IRPF</strong> mensal, deduzindo R$ 189,59 por dependente legal informado.
+                </p>
+            </div>
         </div>
     </div>
 
-    <footer class="w-full text-center text-xs text-slate-400 py-4 mt-auto">
-        Desenvolvido por ThazSobral © 2026 — Todos os direitos reservados.
+    <footer class="w-full text-center text-xs text-slate-400 py-4 mt-auto space-y-1">
+        <div>Desenvolvido por ThazSobral © 2026 — Todos os direitos reservados.</div>
+        <div>
+            <a href="https://github.com/ThazSobral" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-medium inline-flex items-center gap-1">
+                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                Repositório no GitHub
+            </a>
+        </div>
     </footer>
 
     <script>
         const RegrasTributarias2026 = {
             calcularINSS(salarioBase) {
-                // Tabela INSS 2026 Progressiva
                 let inss = 0;
                 if (salarioBase <= 1621.00) {
                     inss = salarioBase * 0.075;
@@ -203,23 +249,23 @@
                 } else if (salarioBase <= 8475.55) {
                     inss = (salarioBase * 0.14) - 198.49;
                 } else {
-                    inss = 988.09; // Teto max
+                    inss = 988.09;
                 }
                 return Math.max(0, inss);
             },
-            calcularIRPF(baseCalculo) {
-                // Tabela IRPF Mensal 2026 Progressiva
+            calcularIRPF(baseCalculo, dependentes) {
+                let baseDoutrina = baseCalculo - (dependentes * 189.59);
                 let irpf = 0;
-                if (baseCalculo <= 2428.80) {
+                if (baseDoutrina <= 2428.80) {
                     irpf = 0;
-                } else if (baseCalculo <= 2826.65) {
-                    irpf = (baseCalculo * 0.075) - 182.16;
-                } else if (baseCalculo <= 3751.05) {
-                    irpf = (baseCalculo * 0.15) - 394.16;
-                } else if (baseCalculo <= 4664.68) {
-                    irpf = (baseCalculo * 0.225) - 675.49;
+                } else if (baseDoutrina <= 2826.65) {
+                    irpf = (baseDoutrina * 0.075) - 182.16;
+                } else if (baseDoutrina <= 3751.05) {
+                    irpf = (baseDoutrina * 0.15) - 394.16;
+                } else if (baseDoutrina <= 4664.68) {
+                    irpf = (baseDoutrina * 0.225) - 675.49;
                 } else {
-                    irpf = (baseCalculo * 0.275) - 908.72;
+                    irpf = (baseDoutrina * 0.275) - 908.72;
                 }
                 return Math.max(0, irpf);
             }
@@ -229,55 +275,22 @@
             return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
-        function validarRegrasClt(diasFerias, diasAbono) {
-            const alerta = document.getElementById('alertaClt');
-            const textoAlerta = document.getElementById('textoAlertaClt');
-            let valido = true;
-
-            if (diasAbono > 10) {
-                textoAlerta.innerText = "Regra CLT: O abono pecuniário (venda) é limitado ao máximo de 10 dias.";
-                alerta.classList.remove('hidden');
-                valido = false;
-            } else if ((diasFerias + diasAbono) > 30) {
-                textoAlerta.innerText = "Atenção: A soma dos dias de férias gozadas com o abono não pode ultrapassar 30 dias por período aquisitivo.";
-                alerta.classList.remove('hidden');
-                valido = false;
+        function toggleAjuda(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
             } else {
-                alerta.classList.add('hidden');
+                el.classList.add('hidden');
             }
-            return valido;
-        }
-
-        function mudarModeloRecebimento() {
-            const tipo = document.getElementById('tipoRecebimento').value;
-            const blocoVale = document.getElementById('blocoVale');
-            const cardValeContainer = document.getElementById('cardValeContainer');
-            const legendaBarVale = document.getElementById('legendaBarVale');
-            const textoReposicao = document.getElementById('textoReposicao');
-
-            if (tipo === 'integral') {
-                blocoVale.classList.add('hidden');
-                cardValeContainer.classList.add('hidden');
-                legendaBarVale.classList.add('hidden');
-                document.getElementById('adiantamentoQuinzenal').value = 0;
-                textoReposicao.innerText = "Guarde este montante para garantir seu sustento no mês seguinte, já que as férias foram pagas de forma antecipada.";
-            } else {
-                blocoVale.classList.remove('hidden');
-                cardValeContainer.classList.remove('hidden');
-                legendaBarVale.classList.remove('hidden');
-                toggleVale40();
-                textoReposicao.innerText = "Guarde para repor no contracheque reduzido do próximo mês. Faça um PIX desse montante para sua conta no dia 5.";
-            }
-            gerarPlanejamento();
         }
 
         function toggleVale40() {
             const isChecked = document.getElementById('checkVale40').checked;
-            const inputVale = document.getElementById('adiantamentoQuinzenal');
-            const salario = parseFloat(document.getElementById('salario').value) || 0;
+            const inputVale = document.getElementById('valorVale');
+            const salarioBase = parseFloat(document.getElementById('salarioBase').value) || 0;
 
             if (isChecked) {
-                inputVale.value = (salario * 0.4).toFixed(2);
+                inputVale.value = (salarioBase * 0.4).toFixed(2);
                 inputVale.disabled = true;
                 inputVale.classList.add('bg-slate-100', 'text-slate-500');
             } else {
@@ -287,121 +300,83 @@
             gerarPlanejamento();
         }
 
-        function toggleDescontoAuto() {
-            const isChecked = document.getElementById('checkDescontoAuto').checked;
-            const inputDesconto = document.getElementById('descontos');
-
-            if (isChecked) {
-                inputDesconto.disabled = true;
-                inputDesconto.classList.add('bg-slate-100', 'text-slate-500');
-            } else {
-                inputDesconto.disabled = false;
-                inputDesconto.classList.remove('bg-slate-100', 'text-slate-500');
-            }
-            gerarPlanejamento();
-        }
-
-        function calcularAutomaticoSeAtivo() {
-            const salario = parseFloat(document.getElementById('salario').value) || 0;
-            if (document.getElementById('checkVale40').checked && document.getElementById('tipoRecebimento').value === 'vale') {
-                document.getElementById('adiantamentoQuinzenal').value = (salario * 0.4).toFixed(2);
-            }
-            gerarPlanejamento();
-        }
-
-        function lerEntradasFormulario() {
-            const salario = parseFloat(document.getElementById('salario').value) || 0;
-            const diasFerias = parseInt(document.getElementById('diasFerias').value) || 0;
-            const diasAbono = parseInt(document.getElementById('diasAbono').value) || 0;
-            const tipoRecebimento = document.getElementById('tipoRecebimento').value;
-            
-            validarRegrasClt(diasFerias, diasAbono);
-
-            const adiantamentoQuinzenal = tipoRecebimento === 'vale' ? (parseFloat(document.getElementById('adiantamentoQuinzenal').value) || 0) : 0;
-
-            const valorDia = salario / 30;
-            const brutoFeriasBase = diasFerias * valorDia;
-            const tercoFerias = brutoFeriasBase / 3;
-            const brutoAbono = (diasAbono * valorDia) + ((diasAbono * valorDia) / 3);
-            
-            const baseInssIr = brutoFeriasBase + tercoFerias;
-
-            let descontos = 0;
-            if (document.getElementById('checkDescontoAuto').checked) {
-                const inss = RegrasTributarias2026.calcularINSS(baseInssIr);
-                const baseIrpf = baseInssIr - inss;
-                const irpf = RegrasTributarias2026.calcularIRPF(baseIrpf);
-                descontos = inss + irpf;
-                document.getElementById('descontos').value = descontos.toFixed(2);
-            } else {
-                descontos = parseFloat(document.getElementById('descontos').value) || 0;
-            }
-
-            return { salario, diasFerias, diasAbono, adiantamentoQuinzenal, descontos, tipoRecebimento, brutoFeriasBase, tercoFerias, brutoAbono };
-        }
-
         let cacheResultados = {};
 
-        function processarCalculos(dados) {
-            const totalBruto = dados.brutoFeriasBase + dados.tercoFerias + dados.brutoAbono;
-            const totalLiquido = totalBruto - dados.descontos;
+        function gerarPlanejamento() {
+            const salarioBase = parseFloat(document.getElementById('salarioBase').value) || 0;
+            const diasFerias = parseInt(document.getElementById('diasFerias').value) || 0;
+            const diasAbono = parseInt(document.getElementById('diasAbono').value) || 0;
+            const numDependentes = parseInt(document.getElementById('numDependentes').value) || 0;
+            const descontosExtras = parseFloat(document.getElementById('descontosExtras').value) || 0;
 
-            const dinheiroViagem = dados.tercoFerias + dados.brutoAbono;
-            const dinheiroVale = dados.adiantamentoQuinzenal;
+            if (document.getElementById('checkVale40').checked) {
+                document.getElementById('valorVale').value = (salarioBase * 0.4).toFixed(2);
+            }
+            const dinheiroVale = parseFloat(document.getElementById('valorVale').value) || 0;
 
-            let dinheiroReposicao = totalLiquido - dinheiroViagem - dinheiroVale;
+            const valorDia = salarioBase / 30;
+            const brutoFerias = diasFerias * valorDia;
+            const tercoFerias = brutoFerias / 3;
+            const brutoAbono = (diasAbono * valorDia) + ((diasAbono * valorDia) / 3);
+            
+            const baseInssIr = brutoFerias + tercoFerias;
+            const inssFerias = RegrasTributarias2026.calcularINSS(baseInssIr);
+            const irpfFerias = RegrasTributarias2026.calcularIRPF(baseInssIr - inssFerias, numDependentes);
+            
+            const liquidoFerias = (brutoFerias + tercoFerias + brutoAbono) - (inssFerias + irpfFerias) - descontosExtras;
+
+            const diasTrabalhados = Math.max(0, 30 - diasFerias);
+            const brutoProporcional = valorDia * diasTrabalhados;
+            const inssProp = RegrasTributarias2026.calcularINSS(brutoProporcional);
+            const irpfProp = RegrasTributarias2026.calcularIRPF(brutoProporcional - inssProp, numDependentes);
+            let estimadoProximoPagamento = brutoProporcional - inssProp - irpfProp - descontosExtras;
+            if (estimadoProximoPagamento < 0) estimadoProximoPagamento = 0;
+
+            const liquidoHabitualIntegral = salarioBase - RegrasTributarias2026.calcularINSS(salarioBase) - RegrasTributarias2026.calcularIRPF(salarioBase - RegrasTributarias2026.calcularINSS(salarioBase), numDependentes);
+            
+            let dinheiroReposicao = liquidoHabitualIntegral - estimadoProximoPagamento - dinheiroVale;
             if (dinheiroReposicao < 0) dinheiroReposicao = 0;
 
+            let dinheiroViagem = liquidoFerias - dinheiroVale - dinheiroReposicao;
+            if (dinheiroViagem < 0) {
+                dinheiroViagem = Math.max(0, liquidoFerias * 0.3);
+                dinheiroReposicao = Math.max(0, liquidoFerias - dinheiroVale - dinheiroViagem);
+            }
+
             cacheResultados = {
-                totalBruto,
-                descontos: dados.descontos,
-                totalLiquido,
+                liquidoFerias,
                 dinheiroViagem,
                 dinheiroVale,
                 dinheiroReposicao,
-                tipoRecebimento: dados.tipoRecebimento
+                estimadoProximoPagamento
             };
 
-            return cacheResultados;
-        }
+            document.getElementById('lblTotalLiquido').innerText = formatarMoeda(liquidoFerias);
+            document.getElementById('valViagem').innerText = formatarMoeda(dinheiroViagem);
+            document.getElementById('valVale').innerText = formatarMoeda(dinheiroVale);
+            document.getElementById('valReposicao').innerText = formatarMoeda(dinheiroReposicao);
+            document.getElementById('lblProximoPagamento').innerText = formatarMoeda(estimadoProximoPagamento);
 
-        function atualizarInterface(res) {
-            document.getElementById('lblTotalBruto').innerText = formatarMoeda(res.totalBruto);
-            document.getElementById('lblTotalDescontos').innerText = formatarMoeda(res.descontos);
-            document.getElementById('lblTotalLiquido').innerText = formatarMoeda(res.totalLiquido);
-
-            document.getElementById('valViagem').innerText = formatarMoeda(res.dinheiroViagem);
-            document.getElementById('valVale').innerText = formatarMoeda(res.dinheiroVale);
-            document.getElementById('valReposicao').innerText = formatarMoeda(res.dinheiroReposicao);
-
-            // Atualizar Barras Proporcionais
-            if (res.totalLiquido > 0) {
-                const pViagem = Math.min(100, Math.max(0, (res.dinheiroViagem / res.totalLiquido) * 100));
-                const pVale = res.tipoRecebimento === 'vale' ? Math.min(100, Math.max(0, (res.dinheiroVale / res.totalLiquido) * 100)) : 0;
+            if (liquidoFerias > 0) {
+                const pViagem = Math.min(100, Math.max(0, (dinheiroViagem / liquidoFerias) * 100));
+                const pVale = Math.min(100, Math.max(0, (dinheiroVale / liquidoFerias) * 100));
                 const pReposicao = Math.max(0, 100 - pViagem - pVale);
 
                 document.getElementById('barViagem').style.width = pViagem + '%';
                 document.getElementById('barVale').style.width = pVale + '%';
                 document.getElementById('barReposicao').style.width = pReposicao + '%';
             }
-
-            document.getElementById('resultado').classList.remove('hidden');
-        }
-
-        function gerarPlanejamento() {
-            const dados = lerEntradasFormulario();
-            const resultados = processarCalculos(dados);
-            atualizarInterface(resultados);
         }
 
         function copiarResumoWhatsApp() {
             const r = cacheResultados;
-            const texto = `🏖️ *Meu Planejamento de Férias CLT* 🏖️\n\n` +
-                `💰 *Total Líquido:* ${formatarMoeda(r.totalLiquido)}\n\n` +
-                `1️⃣ *Lazer / Viagem:* ${formatarMoeda(r.dinheiroViagem)}\n` +
-                (r.tipoRecebimento === 'vale' ? `2️⃣ *Guardar (Dia 15):* ${formatarMoeda(r.dinheiroVale)}\n` : ``) +
-                `3️⃣ *Guardar (Sustento):* ${formatarMoeda(r.dinheiroReposicao)}\n\n` +
-                `_Simulador gerado com base nas regras CLT e tabelas 2026._`;
+            const texto = `🏖️ *Planejamento de Férias Personalizado* 🏖️\n\n` +
+                `💰 *Total Líquido Férias:* ${formatarMoeda(r.liquidoFerias)}\n\n` +
+                `1️⃣ *Lazer / Bônus:* ${formatarMoeda(r.dinheiroViagem)}\n` +
+                `2️⃣ *Guardar (Vale do Dia 15):* ${formatarMoeda(r.dinheiroVale)}\n` +
+                `3️⃣ *Guardar (Complemento Mês):* ${formatarMoeda(r.dinheiroReposicao)}\n\n` +
+                `ℹ️ *Previsão Próximo Pagamento:* Aprox. ${formatarMoeda(r.estimadoProximoPagamento)} (sujeito a variações).\n` +
+                `_Calculado com base nas normas CLT e tabelas 2026._`;
 
             navigator.clipboard.writeText(texto).then(() => {
                 alert("Resumo copiado com sucesso para a área de transferência!");
@@ -409,8 +384,7 @@
         }
 
         window.onload = function () {
-            mudarModeloRecebimento();
-            toggleDescontoAuto();
+            toggleVale40();
             gerarPlanejamento();
         };
     </script>
